@@ -9,9 +9,11 @@ import sys
 sys.path.append('../../Software/Python/')
 
 import time
+import socket
 from grovepi import *
 
 def Main():
+
     led = 4
     pinMode(led, "OUTPUT")
     time.sleep(1)
