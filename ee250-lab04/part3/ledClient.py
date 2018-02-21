@@ -9,8 +9,8 @@ def Main():
     """127.0.0.1 is the loopback address. Any packets sent to this address will
     essentially loop right back to your machine and look for any process 
     listening in on the port specified."""
-    host = '192.168.1.249'
-    port = 5000
+    host = '192.168.1.134'
+    port = 9000
 
     s = socket.socket() #by default, the socket constructor creates an TCP/IPv4 socket
     s.connect((host,port))
@@ -19,8 +19,6 @@ def Main():
     while message != 'q':
         s.send(message.encode('utf-8')) 
         #1024 is the receive buffer size. It's enough for us, and it's a nice number. 
-        data = s.recv(1024).decode('utf-8') 
-        print("Received from server: " + data)
         message = input("-> ")
     s.close()
 
