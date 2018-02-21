@@ -17,13 +17,12 @@ def Main():
     # Change the host and port as needed. For ports, use a number in the 9000 
     # range. 
     host = '192.168.1.134'
-    port = 9000
+    port = 1024
 
     server_addr = '192.168.1.249'
 
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
     s.bind((host,port))
-
     # UDP is connectionless, so a client does not formally connect to a server
     # before sending a message.
     dst_port = 9000
@@ -34,7 +33,8 @@ def Main():
         # for UDP, sendto() and recvfrom() are used instead
         try:
         # Read distance value from Ultrasonic
-            data = grovepi.ultrasonicRead(4)
+            data = grovepi.ultrasonicRead(3)
+            print(data)
             s.sendto(str(data).encode('utf-8'), server) 
         except TypeError:
             print ("Error")
