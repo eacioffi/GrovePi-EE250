@@ -1,3 +1,4 @@
+
 # Ultrasonic Sensor Client
 # 
 # This code runs on the Raspberry Pi. It should sit in a loop which reads from
@@ -15,10 +16,10 @@ import socket
 def Main():
     # Change the host and port as needed. For ports, use a number in the 9000 
     # range. 
-    host = '127.0.0.1'
+    host = '192.168.1.134'
     port = 9000
 
-    server_addr = '127.0.0.1'
+    server_addr = '192.168.1.249'
 
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
     s.bind((host,port))
@@ -31,14 +32,14 @@ def Main():
         server = (server_addr, int(dst_port))
 
         # for UDP, sendto() and recvfrom() are used instead
-		try:
+        try:
         # Read distance value from Ultrasonic
-        	data = grovepi.ultrasonicRead(ultrasonic_ranger)
-        	s.sendto(data.encode('utf-8'), server) 
+            data = grovepi.ultrasonicRead(4)
+            s.sendto(str(data).encode('utf-8'), server) 
         except TypeError:
-        	print ("Error")
-    	except IOError:
-        	print ("Error")
+            print ("Error")
+        except IOError:
+            print ("Error")
     s.close()
 
 if __name__ == '__main__':
