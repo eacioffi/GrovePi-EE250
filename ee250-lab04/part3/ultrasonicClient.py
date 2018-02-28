@@ -17,7 +17,7 @@ def Main():
     # Change the host and port as needed. For ports, use a number in the 9000 
     # range. 
     host = '192.168.1.134'
-    port = 1024
+    port = 9001
 
     server_addr = '192.168.1.249'
 
@@ -25,7 +25,7 @@ def Main():
     s.bind((host,port))
     # UDP is connectionless, so a client does not formally connect to a server
     # before sending a message.
-    dst_port = 9000
+    dst_port = 9001
     while True:
         #tuples are immutable so we need to overwrite the last tuple
         server = (server_addr, int(dst_port))
