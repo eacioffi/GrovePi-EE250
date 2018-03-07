@@ -26,6 +26,7 @@ def on_press(key):
         #send "w" character to rpi
     elif k == 'a':
         print("a")
+        client.publish("anrg-pi12_LED","LED_ON")
         # send "a" character to rpi
         #send "LED_ON"
     elif k == 's':
