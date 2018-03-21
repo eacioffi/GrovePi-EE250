@@ -6,10 +6,16 @@ import paho.mqtt.client as mqtt
 import time
 from pynput import keyboard
 
+def led_callback(client, userdata, msg):
+    if str(msg.payload.decode("utf-8")) == "ON":
+        print("turning led ON")
+    elif str(msg.payload.decode("utf-8")) == "OFF":
+        print("turning led OFF")
+
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
-
     client.subscribe("anrg-pi12/led")
+    client.message_callback_add("anrg-pi12/led", led_callback)
 
 #Default message callback. Please use custom callbacks.
 def on_message(client, userdata, msg):
