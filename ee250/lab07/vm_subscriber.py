@@ -9,13 +9,13 @@ from pynput import keyboard
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
 
-    #subscribe to the ultrasonic ranger topic here
+    client.subscribe("anrg-pi12/led")
 
 #Default message callback. Please use custom callbacks.
 def on_message(client, userdata, msg):
-    print("on_message: " + msg.topic + " " + str(msg.payload))
+    print("on_message: " + msg.topic + " " + str(msg.payload.decode("utf-8")))
 
-def on_press(key):
+
 if __name__ == '__main__':
     #this section is covered in publisher_and_subscriber_example.py
     client = mqtt.Client()
@@ -25,7 +25,6 @@ if __name__ == '__main__':
     client.loop_start()
 
     while True:
-        print("delete this line")
         time.sleep(1)
             
 
