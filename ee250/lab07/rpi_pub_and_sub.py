@@ -12,7 +12,10 @@ from grovepi import *
 from grove_rgb_lcd import *
 
 led = 4
+button = 3
+
 pinMode(led, "OUTPUT")
+grovep.pinMode(button, "INPUT")
 
 def lcd_callback(client, userdata, msg):
     setText(str(msg.payload.decode("utf-8")))
@@ -47,5 +50,7 @@ if __name__ == '__main__':
     while True:
         time.sleep(1)
         data = grovepi.ultrasonicRead(3)
-        client.publish("anrg-pi12/usRanger", str(data).encode('utf-8')) 
+        client.publish("anrg-pi12/usRanger", str(data).encode('utf-8'))
+        if grovepi.digitalRead(button):
+            client.publish("anrg-pi12/button", "Button Pressed!")
 
