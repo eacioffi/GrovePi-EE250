@@ -52,7 +52,6 @@ if __name__ == '__main__':
     client.loop_start()
 
     while True:
-        print("delete this line")
         time.sleep(1)
             
 
