@@ -7,6 +7,7 @@ import time
 
 import sys
 sys.path.append('../../../Software/Python/')
+import grovepi
 from grovepi import *
 
 led = 4
