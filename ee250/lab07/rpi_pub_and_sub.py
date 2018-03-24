@@ -5,20 +5,11 @@ Run rpi_pub_and_sub.py on your Raspberry Pi."""
 import paho.mqtt.client as mqtt
 import time
 
-# Import SPI library (for hardware SPI) and MCP3008 library.
-import Adafruit_GPIO.SPI as SPI
-import Adafruit_MCP3008
+sys.path.append('../../../Software/Python/')
+from grovepie import *
 
-# GPIO config
-import RPi.GPIO as GPIO
-
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(11, GPIO.OUT)
-
-# Hardware SPI configuration:
-SPI_PORT   = 0
-SPI_DEVICE = 0
-mcp = Adafruit_MCP3008.MCP3008(spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE))
+led = 4
+pinMode(led, "OUTPUT")
 
 
 def lcd_callback(client, userdata, msg):
@@ -27,10 +18,10 @@ def lcd_callback(client, userdata, msg):
 def led_callback(client, userdata, msg):
     if str(msg.payload.decode("utf-8")) == "ON":
         print("turning led ON")
-        GPIO.output(11, True)
+        digitalWrite(led, 1)
     elif str(msg.payload.decode("utf-8")) == "OFF":
         print("turning led OFF")
-        GPIO.output(11, False)
+        digitalWrite(led, 0)
 
 #Default message callback. Please use custom callbacks.
 def on_message(client, userdata, msg):
@@ -53,5 +44,4 @@ if __name__ == '__main__':
 
     while True:
         time.sleep(1)
-            
 
