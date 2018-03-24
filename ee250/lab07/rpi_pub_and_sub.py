@@ -39,7 +39,6 @@ def on_connect(client, userdata, flags, rc):
     client.message_callback_add("anrg-pi12/lcd", lcd_callback)
     client.message_callback_add("anrg-pi12/led", led_callback)
 
-def on_press(key):
 if __name__ == '__main__':
     #this section is covered in publisher_and_subscriber_example.py
     client = mqtt.Client()
