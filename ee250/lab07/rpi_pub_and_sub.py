@@ -16,7 +16,8 @@ pinMode(led, "OUTPUT")
 
 def lcd_callback(client, userdata, msg):
     #setText(str(msg.payload.decode("utf-8")))
-    print("test")
+    setText("h\n")
+    #print("test")
 
 def led_callback(client, userdata, msg):
     if str(msg.payload.decode("utf-8")) == "ON":
