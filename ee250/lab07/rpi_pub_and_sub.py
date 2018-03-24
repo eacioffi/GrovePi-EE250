@@ -48,9 +48,10 @@ if __name__ == '__main__':
     client.loop_start()
 
     while True:
-        time.sleep(1)
         data = grovepi.ultrasonicRead(3)
         client.publish("anrg-pi12/usRanger", str(data).encode('utf-8'))
-        if grovepi.digitalRead(button):
-            client.publish("anrg-pi12/button", "Button Pressed!")
+        for n in range(10):
+            if grovepi.digitalRead(button):
+                client.publish("anrg-pi12/button", "Button Pressed!")
+            time.sleep(0.1)
 
