@@ -28,7 +28,6 @@ def led_callback(client, userdata, msg):
 
 #Default message callback. Please use custom callbacks.
 def on_message(client, userdata, msg):
-<<<<<<< HEAD
     print("on_message: " + msg.topic + " " + str(msg.payload.decode("utf-8")))
 
 def on_connect(client, userdata, flags, rc):
@@ -37,9 +36,6 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe("anrg-pi12/lcd")
     client.message_callback_add("anrg-pi12/lcd", lcd_callback)
     client.message_callback_add("anrg-pi12/led", led_callback)
-=======
-    print("on_message: " + msg.topic + " " + str(msg.payload, "utf-8"))
->>>>>>> upstream/sp18-master
 
 if __name__ == '__main__':
     #this section is covered in publisher_and_subscriber_example.py
