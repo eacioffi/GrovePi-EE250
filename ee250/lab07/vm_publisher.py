@@ -26,7 +26,6 @@ def on_press(key):
     if k == 'a':
         #print("publishing led message: ON")
         client.publish("anrg-pi12/led", "ON")
-        client.publish("anrg-pi12/usRanger", "test")
         #client.publish("anrg-pi12/lcd", "a")
     #elif k == 's':
         #client.publish("anrg-pi12/lcd", "s")

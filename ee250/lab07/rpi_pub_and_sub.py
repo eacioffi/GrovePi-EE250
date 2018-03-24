@@ -7,6 +7,7 @@ import time
 
 import sys
 sys.path.append('../../../Software/Python/')
+import grovepi
 from grovepi import *
 
 led = 4
@@ -18,10 +19,10 @@ def lcd_callback(client, userdata, msg):
 
 def led_callback(client, userdata, msg):
     if str(msg.payload.decode("utf-8")) == "ON":
-        print("turning led ON")
+        #print("turning led ON")
         digitalWrite(led, 1)
     elif str(msg.payload.decode("utf-8")) == "OFF":
-        print("turning led OFF")
+        #print("turning led OFF")
         digitalWrite(led, 0)
 
 #Default message callback. Please use custom callbacks.
