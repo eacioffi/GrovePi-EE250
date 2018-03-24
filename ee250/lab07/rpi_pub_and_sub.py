@@ -7,7 +7,7 @@ import time
 
 import sys
 sys.path.append('../../../Software/Python/')
-from grovepie import *
+from grovepi import *
 
 led = 4
 pinMode(led, "OUTPUT")
