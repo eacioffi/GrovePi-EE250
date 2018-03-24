@@ -45,4 +45,6 @@ if __name__ == '__main__':
 
     while True:
         time.sleep(1)
+        data = grovepi.ultrasonicRead(3)
+        client.publish("anrg-pi12/usRanger", str(data).encode('utf-8')) 
 
