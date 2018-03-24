@@ -21,18 +21,19 @@ def on_press(key):
     except: 
         k = key.name # other keys
     
-    if k == 'w':
-        client.publish("anrg-pi12/lcd", "w")
-    elif k == 'a':
-        print("publishing led message: ON")
+    #if k == 'w':
+        #client.publish("anrg-pi12/lcd", "w")
+    if k == 'a':
+        #print("publishing led message: ON")
         client.publish("anrg-pi12/led", "ON")
-        client.publish("anrg-pi12/lcd", "a")
-    elif k == 's':
-        client.publish("anrg-pi12/lcd", "s")
+        client.publish("anrg-pi12/usRanger", "test")
+        #client.publish("anrg-pi12/lcd", "a")
+    #elif k == 's':
+        #client.publish("anrg-pi12/lcd", "s")
     elif k == 'd':
-        print("publishing led message: OFF")
+        #print("publishing led message: OFF")
         client.publish("anrg-pi12/led", "OFF")
-        client.publish("anrg-pi12/lcd", "d")
+        #client.publish("anrg-pi12/lcd", "d")
 
 if __name__ == '__main__':
     #setup the keyboard event listener

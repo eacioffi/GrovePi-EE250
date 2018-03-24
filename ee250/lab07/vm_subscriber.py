@@ -4,23 +4,14 @@ Run vm_subscriber.py in a separate terminal on your VM."""
 
 import paho.mqtt.client as mqtt
 import time
-from pynput import keyboard
 
-def lcd_callback(client, userdata, msg):
+def usRanger_callback(client, userdata, msg):
     print(str(msg.payload.decode("utf-8")))
-
-def led_callback(client, userdata, msg):
-    if str(msg.payload.decode("utf-8")) == "ON":
-        print("turning led ON")
-    elif str(msg.payload.decode("utf-8")) == "OFF":
-        print("turning led OFF")
 
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
-    client.subscribe("anrg-pi12/led")
-    client.subscribe("anrg-pi12/lcd")
-    client.message_callback_add("anrg-pi12/lcd", lcd_callback)
-    client.message_callback_add("anrg-pi12/led", led_callback)
+    client.subscribe("anrg-pi12/usRanger")
+    client.message_callback_add("anrg-pi12/usRanger", usRanger_callback)
 
 #Default message callback. Please use custom callbacks.
 def on_message(client, userdata, msg):
