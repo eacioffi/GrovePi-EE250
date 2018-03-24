@@ -32,6 +32,10 @@ def led_callback(client, userdata, msg):
         print("turning led OFF")
         GPIO.output(11, False)
 
+#Default message callback. Please use custom callbacks.
+def on_message(client, userdata, msg):
+    print("on_message: " + msg.topic + " " + str(msg.payload.decode("utf-8")))
+
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
     client.subscribe("anrg-pi12/led")
