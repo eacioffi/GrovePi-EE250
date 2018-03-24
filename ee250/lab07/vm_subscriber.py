@@ -15,6 +15,7 @@ def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
     client.subscribe("anrg-pi12/usRanger")
     client.subscribe("anrg-pi12/button")
+    client.message_callback_add("anrg-pi12/usRanger", usRanger_callback)
     client.message_callback_add("anrg-pi12/button", button_callback)
 
 #Default message callback. Please use custom callbacks.

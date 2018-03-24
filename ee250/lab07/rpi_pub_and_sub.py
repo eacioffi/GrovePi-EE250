@@ -12,10 +12,10 @@ from grovepi import *
 from grove_rgb_lcd import *
 
 led = 4
-button = 3
+button = 7
 
 pinMode(led, "OUTPUT")
-grovep.pinMode(button, "INPUT")
+grovepi.pinMode(button, "INPUT")
 
 def lcd_callback(client, userdata, msg):
     setText(str(msg.payload.decode("utf-8")))
