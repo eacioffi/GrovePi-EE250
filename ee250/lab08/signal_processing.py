@@ -16,13 +16,13 @@ ranger2_dist = []
 
 def ranger1_callback(client, userdata, msg):
     global ranger1_dist
-    ranger1_dist.append(int(msg.payload))
+    ranger1_dist.append(min(125, int(msg.payload)))
     #truncate list to only have the last MAX_LIST_LENGTH values
     ranger1_dist = ranger1_dist[-MAX_LIST_LENGTH:]
 
 def ranger2_callback(client, userdata, msg):
     global ranger2_dist
-    ranger2_dist.append(int(msg.payload))
+    ranger2_dist.append(min(125, int(msg.payload)))
     #truncate list to only have the last MAX_LIST_LENGTH values
     ranger2_dist = ranger2_dist[-MAX_LIST_LENGTH:]
 
