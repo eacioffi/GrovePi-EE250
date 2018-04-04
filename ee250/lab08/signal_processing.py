@@ -1,5 +1,11 @@
 import paho.mqtt.client as mqtt
 import time
+from enum import Enum
+
+class Direction(Enum):
+    Left = 0
+    Right = 1
+    Middle = 2
 
 # MQTT variables
 broker_hostname = "eclipse.usc.edu"
