@@ -20,6 +20,15 @@ MAX_LIST_LENGTH = 100
 ranger1_dist = []
 ranger2_dist = []
 
+def prescence():
+    if ranger1_dist_avg<125 or ranger2_dist_avg<125:
+        return True
+    else:
+        return False
+
+
+
+
 def ranger1_callback(client, userdata, msg):
     global ranger1_dist
     ranger1_dist.append(min(125, int(msg.payload)))
@@ -44,6 +53,7 @@ def on_connect(client, userdata, flags, rc):
 # This should not be called.
 def on_message(client, userdata, msg): 
     print(msg.topic + " " + str(msg.payload))
+
 
 if __name__ == '__main__':
     # Connect to broker and start loop    
