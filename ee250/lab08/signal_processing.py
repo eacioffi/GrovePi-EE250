@@ -2,10 +2,15 @@ import paho.mqtt.client as mqtt
 import time
 from enum import Enum
 
-class Direction(Enum):
+class Position(Enum):
     Left = 0
     Right = 1
     Middle = 2
+
+class Movement(Enum):
+    Still = 0
+    Left = 1
+    Right = 2
 
 # MQTT variables
 broker_hostname = "eclipse.usc.edu"
@@ -26,20 +31,23 @@ def prescence():
     else:
         return False
 
-
-
-
 def ranger1_callback(client, userdata, msg):
     global ranger1_dist
     ranger1_dist.append(min(125, int(msg.payload)))
     #truncate list to only have the last MAX_LIST_LENGTH values
     ranger1_dist = ranger1_dist[-MAX_LIST_LENGTH:]
+    ranger1_dist_avg = sum(ranger1_dist) / float(len(ranger1_dist))
+    ranger1_slope = [j-i for i, j in zip(ranger1_dist[:-1], ranger1_dist[1:])]
+    ranger1_slope_avg = sum(ranger1_slope) / float(len(ranger1_slope))
 
 def ranger2_callback(client, userdata, msg):
     global ranger2_dist
     ranger2_dist.append(min(125, int(msg.payload)))
     #truncate list to only have the last MAX_LIST_LENGTH values
     ranger2_dist = ranger2_dist[-MAX_LIST_LENGTH:]
+    ranger2_dist_avg = sum(ranger2_dist) / float(len(ranger2_dist))
+    ranger2_slope = [j-i for i, j in zip(ranger2_dist[:-1], ranger2_dist[1:])]
+    ranger2_slope_avg = sum(ranger2_slope) / float(len(ranger2_slope))
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
