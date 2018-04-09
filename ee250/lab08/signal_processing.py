@@ -24,13 +24,13 @@ ranger1_slope_avg = 0
 ranger2_slope_avg = 0
 
 def isPresent():
-    if ranger1_dist_avg < 125 or ranger2_dist_avg < 125:
+    if ranger1_dist_avg < 110 or ranger2_dist_avg < 110:
         return "Present"
     else:
         return "Absent"
 
 def getPosition():
-    if abs(ranger1_dist_avg - ranger2_dist_avg) < 15:
+    if abs(ranger1_dist_avg - ranger2_dist_avg) < 45:
         return "Middle"
     elif ranger1_dist_avg - ranger2_dist_avg > 0:
         return "Right"
@@ -38,7 +38,7 @@ def getPosition():
         return "Left"
 
 def getMovement():
-    if abs(ranger1_slope_avg) < 2 and abs(ranger2_slope_avg) < 2:
+    if abs(ranger1_slope_avg) < 5 and abs(ranger2_slope_avg) < 5:
         return "Still"
     elif ranger1_slope_avg > 0:
         return "Moving Right"
@@ -75,7 +75,7 @@ def ranger1_callback(client, userdata, msg):
     global ranger1_dist_avg
     global ranger1_slope
     global ranger1_slope_avg
-    ranger1_dist.append(float(msg.payload.decode("utf-8")))
+    ranger1_dist.append(min(125, float(msg.payload.decode("utf-8"))))
 
     if len(ranger1_dist) >= MAX_LIST_LENGTH:
         #truncate list to only have the last MAX_LIST_LENGTH values
@@ -89,7 +89,7 @@ def ranger2_callback(client, userdata, msg):
     global ranger2_dist_avg
     global ranger2_slope
     global ranger2_slope_avg
-    ranger2_dist.append(float(msg.payload.decode("utf-8")))
+    ranger2_dist.append(min(125, float(msg.payload.decode("utf-8"))))
 
     if len(ranger2_dist) >= MAX_LIST_LENGTH:
         #truncate list to only have the last MAX_LIST_LENGTH values
