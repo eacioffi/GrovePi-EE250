@@ -1,53 +1,102 @@
 import paho.mqtt.client as mqtt
 import time
-from enum import Enum
-
-class Position(Enum):
-    Left = 0
-    Right = 1
-    Middle = 2
-
-class Movement(Enum):
-    Still = 0
-    Left = 1
-    Right = 2
+import requests
+import json
+from datetime import datetime
 
 # MQTT variables
 broker_hostname = "eclipse.usc.edu"
 broker_port = 11000
-ultrasonic_ranger1_topic = "ultrasonic_ranger1"
-ultrasonic_ranger2_topic = "ultrasonic_ranger2"
+ultrasonic_ranger1_topic = "uranger1"
+ultrasonic_ranger2_topic = "uranger2"
 
 # Lists holding the ultrasonic ranger sensor distance readings. Change the 
 # value of MAX_LIST_LENGTH depending on how many distance samples you would 
 # like to keep at any point in time.
-MAX_LIST_LENGTH = 100
+MAX_LIST_LENGTH = 5
 ranger1_dist = []
 ranger2_dist = []
+ranger1_dist_avg = 0
+ranger2_dist_avg = 0
+ranger1_slope = []
+ranger2_slope = []
+ranger1_slope_avg = 0
+ranger2_slope_avg = 0
 
-def prescence():
-    if ranger1_dist_avg<125 or ranger2_dist_avg<125:
-        return True
+def isPresent():
+    if ranger1_dist_avg < 125 or ranger2_dist_avg < 125:
+        return "Present"
     else:
-        return False
+        return "Absent"
+
+def getPosition():
+    if abs(ranger1_dist_avg - ranger2_dist_avg) < 15:
+        return "Middle"
+    elif ranger1_dist_avg - ranger2_dist_avg > 0:
+        return "Right"
+    else:
+        return "Left"
+
+def getMovement():
+    if abs(ranger1_slope_avg) < 2 and abs(ranger2_slope_avg) < 2:
+        return "Still"
+    elif ranger1_slope_avg > 0:
+        return "Moving Right"
+    else:
+        return "Moving Left"
+
+def classify():
+    # This header sets the HTTP request's mimetype to `application/json`. This
+    # means the payload of the HTTP message will be formatted as a json ojbect
+    hdr = {
+        'Content-Type': 'application/json',
+        'Authorization': None #not using HTTP secure
+    }
+
+    # The payload of our message starts as a simple dictionary. Before sending
+    # the HTTP message, we will format this into a json object
+    payload = {
+        'Time': str(datetime.now()),
+        'Presence': isPresent(),
+        'Position': getPosition(),
+        'Movement': getMovement()
+    }
+
+    response = requests.post("http://0.0.0.0:5000/post-event", headers = hdr,
+                             data = json.dumps(payload))
+
+    # Print the json object from the HTTP response
+    print(response.json())
+
 
 def ranger1_callback(client, userdata, msg):
     global ranger1_dist
-    ranger1_dist.append(min(125, int(msg.payload)))
-    #truncate list to only have the last MAX_LIST_LENGTH values
-    ranger1_dist = ranger1_dist[-MAX_LIST_LENGTH:]
-    ranger1_dist_avg = sum(ranger1_dist) / float(len(ranger1_dist))
-    ranger1_slope = [j-i for i, j in zip(ranger1_dist[:-1], ranger1_dist[1:])]
-    ranger1_slope_avg = sum(ranger1_slope) / float(len(ranger1_slope))
+    global ranger1_dist_avg
+    global ranger1_slope
+    global ranger1_slope_avg
+    ranger1_dist.append(float(msg.payload.decode("utf-8")))
+
+    if len(ranger1_dist) >= MAX_LIST_LENGTH:
+        #truncate list to only have the last MAX_LIST_LENGTH values
+        ranger1_dist = ranger1_dist[-MAX_LIST_LENGTH:]
+        ranger1_dist_avg = sum(ranger1_dist) / float(len(ranger1_dist))
+        ranger1_slope = [j-i for i, j in zip(ranger1_dist[:-1], ranger1_dist[1:])]
+        ranger1_slope_avg = sum(ranger1_slope) / float(len(ranger1_slope))
 
 def ranger2_callback(client, userdata, msg):
     global ranger2_dist
-    ranger2_dist.append(min(125, int(msg.payload)))
-    #truncate list to only have the last MAX_LIST_LENGTH values
-    ranger2_dist = ranger2_dist[-MAX_LIST_LENGTH:]
-    ranger2_dist_avg = sum(ranger2_dist) / float(len(ranger2_dist))
-    ranger2_slope = [j-i for i, j in zip(ranger2_dist[:-1], ranger2_dist[1:])]
-    ranger2_slope_avg = sum(ranger2_slope) / float(len(ranger2_slope))
+    global ranger2_dist_avg
+    global ranger2_slope
+    global ranger2_slope_avg
+    ranger2_dist.append(float(msg.payload.decode("utf-8")))
+
+    if len(ranger2_dist) >= MAX_LIST_LENGTH:
+        #truncate list to only have the last MAX_LIST_LENGTH values
+        ranger2_dist = ranger2_dist[-MAX_LIST_LENGTH:]
+        ranger2_dist_avg = sum(ranger2_dist) / float(len(ranger2_dist))
+        ranger2_slope = [j-i for i, j in zip(ranger2_dist[:-1], ranger2_dist[1:])]
+        ranger2_slope_avg = sum(ranger2_slope) / float(len(ranger2_slope))
+        classify()
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -82,7 +131,7 @@ if __name__ == '__main__':
         
         # TODO: detect movement and/or position
         
-        print("ranger1: " + str(ranger1_dist[-1:]) + ", ranger2: " + 
-            str(ranger2_dist[-1:])) 
+        #print("ranger1: " + str(ranger1_dist[-1:]) + ", ranger2: " + 
+       #     str(ranger2_dist[-1:])) 
         
         time.sleep(0.2)
