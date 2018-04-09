@@ -7,8 +7,8 @@ from datetime import datetime
 # MQTT variables
 broker_hostname = "eclipse.usc.edu"
 broker_port = 11000
-ultrasonic_ranger1_topic = "uranger1"
-ultrasonic_ranger2_topic = "uranger2"
+ultrasonic_ranger1_topic = "ultrasonic_ranger1"
+ultrasonic_ranger2_topic = "ultrasonic_ranger2"
 
 # Lists holding the ultrasonic ranger sensor distance readings. Change the 
 # value of MAX_LIST_LENGTH depending on how many distance samples you would 
@@ -55,18 +55,19 @@ def classify():
 
     # The payload of our message starts as a simple dictionary. Before sending
     # the HTTP message, we will format this into a json object
-    payload = {
-        'Time': str(datetime.now()),
-        'Presence': isPresent(),
-        'Position': getPosition(),
-        'Movement': getMovement()
-    }
 
-    response = requests.post("http://0.0.0.0:5000/post-event", headers = hdr,
-                             data = json.dumps(payload))
+    if isPresent():
+        if getMovement() != "Still":
+            payload = { 'Time': str(datetime.now()), 'Movement': getMovement() }
+            print(getMovement())   
+        else:
+            payload = { 'Time': str(datetime.now()), 'Still -- Position': getPosition() }
+            print("Still -- Position:", getPosition())
 
-    # Print the json object from the HTTP response
-    print(response.json())
+        response = requests.post("http://0.0.0.0:5000/post-event", headers = hdr,
+                                data = json.dumps(payload))
+        # Print the json object from the HTTP response
+        # print(response.json())
 
 
 def ranger1_callback(client, userdata, msg):
