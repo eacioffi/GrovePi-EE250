@@ -3,7 +3,7 @@ import time
 
 broker_hostname = "eclipse.usc.edu"
 broker_port = 11000
-led = 4
+led = 3
 
 LEDon = False
 
@@ -16,14 +16,12 @@ from grove_rgb_lcd import *
 pinMode(led, "OUTPUT")
 
 def led_callback(client, userdata, msg):
-    if ledON:
-        #print("turning led ON")
-        LEDon = False
-        digitalWrite(led, 1)
-    else:
-    	LEDon = True
-        #print("turning led OFF")
-        digitalWrite(led, 0)
+	if ledON:
+		LEDon = False
+		digitalWrite(led, 1)
+	else:
+		LEDon = True
+    	digitalWrite(led, 0)
 
 def lcd_callback(client, userdata, msg):
     setText(str(msg.payload.decode("utf-8")))
