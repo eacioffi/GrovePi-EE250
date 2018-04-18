@@ -1,9 +1,8 @@
 import paho.mqtt.client as mqtt
+import time
 
 broker_hostname = "eclipse.usc.edu"
 broker_port = 11000
-ultrasonic_ranger1_topic = "ultrasonic_ranger1"
-ultrasonic_ranger2_topic = "ultrasonic_ranger2"
 
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
@@ -19,5 +18,8 @@ if __name__ == '__main__':
     client.connect(broker_hostname, broker_port, 60)
     client.loop_start()
 
+    temp = 0
     while True:
+    	client.publish("anrg-pi3/temp", temp)
+    	temp += 1
         time.sleep(0.2)
