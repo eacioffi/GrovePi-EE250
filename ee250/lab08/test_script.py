@@ -62,6 +62,6 @@ if __name__ == '__main__':
         client.publish("uranger1", sensor_1)
         client.publish("uranger2", sensor_2)
         print("Sensor 1:", sensor_1, " ........ Sensor 2:", sensor_2 )
-        time.sleep(.2)
+        time.sleep(.1)
             
 
