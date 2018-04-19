@@ -46,7 +46,7 @@ if __name__ == '__main__':
 	client.loop_start()
 
 	while True:
-		[temp, hum] = dht(2, 1)
+		[temp, hum] = dht(dhtPort, 0)
 		client.publish("anrg-pi3/temp", str(temp))
 		client.publish("anrg-pi3/humidity", str(hum))
 		time.sleep(1)
